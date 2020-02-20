@@ -1,0 +1,1840 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "Untitled9.ipynb",
+      "provenance": [],
+      "authorship_tag": "ABX9TyOSAXMlKu5ZAlptmG9qZrQ4",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/LalithShankar/sentiment-analysis/blob/master/Entity%20Extraction%20using%20SpaCy\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "YEo77k9h-5N6",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "\n",
+        "import re\n",
+        "import textract\n",
+        "#read the content of pdf as text\n",
+        "text1 = textract.process('UBS Financial Services.pdf').decode(\"utf-8\")\n",
+        "#use four space as paragraph delimiter to convert the text into list of paragraphs.\n",
+        "type(text1)\n",
+        "text1\n",
+        "x = re.split('\\s{3,}', text1)\n",
+        "x"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "GtYOLfv9_Vtf",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "pip install textract"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "hxo9OZ1zBpum",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "x1 = re.split('.\\n', text1)\n",
+        "x1"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "-j9wy0sIBtYW",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "def listtostring(s):\n",
+        "  str1 = \"\\n\"\n",
+        "  return (str1.join(s))\n",
+        "l2s= listtostring(x)\n",
+        "l2s\n",
+        "print(l2s)\n",
+        "type(l2s)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "5KeFPtU6CdnL",
+        "colab_type": "text"
+      },
+      "source": [
+        "The whole document as DataFrame"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "_rC0Z51eCdAG",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "n = l2s.replace('\\n', '')\n",
+        "finallist1 = n.split('                     ')"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "tDDYBBd_PtZz",
+        "colab_type": "code",
+        "outputId": "51fb7f63-dc20-432b-a334-9a29faa8743c",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 54
+        }
+      },
+      "source": [
+        "data = {'Name':finallist1}\n",
+        "data"
+      ],
+      "execution_count": 0,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "{'Name': ['UNITED STATES OF AMERICABefore theSECURITIES AND EXCHANGE COMMISSIONSECURITIES ACT OF 1933 Release No. 10433 / October 27, 2017SECURITIES EXCHANGE ACT OF 1934 Release No. 81974 / October 27, 2017INVESTMENT ADVISERS ACT OF 1940 Release No. 4803 / October 27, 2017ADMINISTRATIVE PROCEEDING File No. 3-18270ORDER INSTITUTING ADMINISTRATIVE AND CEASE-AND-DESIST PROCEEDINGS, PURSUANT TO SECTION 8A OF THE SECURITIES ACT OF 1933, SECTION 15(b) OF THE SECURITIES EXCHANGE ACT OF 1934, AND SECTION 203(e) OF THE INVESTMENT ADVISERS ACT OF 1940, MAKING FINDINGS, AND IMPOSING REMEDIAL  SANCTIONS AND A CEASE-AND-DESIST  ORDERIn the Matter ofUBS FINANCIAL SERVICES INC.,Respondent.I.The Securities and Exchange Commission (“Commission”) deems it appropriate and in thepublic interest that public administrative and cease-and-desist proceedings be, and hereby are, instituted pursuant to Section 8A of the Securities Act of 1933 (“Securities Act”), Section 15(b) of the Securities Exchange Act of 1934 (“Exchange Act”), and Section 203(e) of the Investment Advisers Act of 1940 (“Advisers Act”), against UBS Financial Services Inc. (“UBS” or “Respondent”).II.In anticipation of the institution of these proceedings, UBS has submitted an  Offer ofSettlement (the “Offer”) which the Commission has determined to accept.  Solely for the purpose of these proceedings and any other proceedings brought by or on behalf of the Commission, or to which the Commission is a party, and without admitting or denying the findings1herein, except as to the Commission’s jurisdiction over it and the subject matter of these proceedings, which are admitted, UBS consents to the entry of this Order Instituting Administrative and Cease-and-Desist Proceedings Pursuant to Section 8A of the Securities Act of 1933, Section 15(b) of the Securities Exchange Act of 1934, and Section 203(e) of the Investment Advisers Act of 1940, Making Findings, and Imposing Remedial Sanctions  and a Cease-and-Desist Order (“Order”), as set forth below.III.On the basis of this Order and UBS’s Offer, the Commission finds that:Summary1.From at least January 2010 through June 2015 (the “Relevant Period”), UBSdisadvantaged certain retirement plan and charitable organization brokerage customers (“Eligible Customers”)1 by failing to ascertain that they were eligible for a less expensive share class, and recommending and selling them more expensive share classes in certain open-end registered investment companies (“mutual funds”) when less expensive share classes were available.  UBS did so without disclosing that it would receive greater compensation from the Eligible Customers’ purchases of the more expensive share classes.  Eligible Customers did not have sufficient information to understand that UBS had a conflict of interest resulting from compensation it received for selling the more expensive share classes.  Specifically, UBS recommended and sold these Eligible Customers Class A shares with an up-front sales charge, or Class B or Class C shares with a back-end contingent deferred sales charge (“CDSC”) (a deferred sales charge the purchaser pays if the purchaser sells the shares during a specified time period following the purchase) and higher ongoing fees and expenses, when these Eligible Customers were eligible to purchase load-waived Class A and/or no-load Class R shares.  UBS omitted material information concerning its compensation when it recommended the more expensive share classes.  UBS also did not disclose that the purchase of the more expensive share classes would negatively impact the overall return on the Eligible Customers’ investments, in light of the different fee structures for the different fund share classes.2.In making those recommendations of more expensive share classes whileomitting material facts, UBS violated Sections 17(a)(2) and 17(a)(3) of the Securities Act.These provisions prohibit, respectively, in the offer or sale of securities, obtaining money or property by means of an omission to state a material fact necessary to make statements made not misleading, and engaging in a course of business  which operates as a fraud or deceit on the purchaser.1  The term “Eligible Customers” may include, among other things, customers that held the following type of retirement accounts: 401(k) plans, 403(b) plans, profit-sharing plans, defined benefit plans, and certain IRA accounts.  Eligible Customers also include accounts held by tax-exempt, non-profit organizations.2Respondent3.UBS is a subsidiary of UBS AG and is registered with the Commission as abroker-dealer and investment adviser.  UBS is incorporated in Delaware and has its principal place of business in New York, New York.Background4.Mutual funds often offer different fund share classes that each represent acommon interest in an investment portfolio, but differ in the amount and types of sales charges and fees a fund investor may incur.  For funds that have sales charges or sales “loads,” the timing and amount of sales loads typically vary between share classes.  These sales charges are normally assessed as a percentage of an investor’s investment.  For example, Class A shares often are subject to an up-front sales charge in addition to ongoing marketing and distribution fees, known as Rule 12b-1 fees.  Class B and Class C shares often do not have an up-front sales charge, but have higher Rule 12b-1 fees.  Class R shares have no up-front sales charges, but may have sub-classes with Rule 12b-1 fees equal to or greater than those of Class A shares.5.Many mutual funds provide sales-load waivers for Class A shares to qualifiedretirement and charitable accounts.  Such waivers are important to investors because they allow investors to buy shares at the fund’s current net asset value.  Even when not eligible to purchase load-waived Class A shares, qualified retirement customers may be eligible to purchase Class R shares.  Eligibility requirements for load-waived Class A shares and Class R shares vary from fund to fund, and are disclosed in the prospectus and statement of additional information for each relevant fund.6.The sales charges and fees associated with different share classes affect mutualfund shareholders’ returns.  A mutual fund investor eligible for a sales charge waiver in Class A shares will likely obtain a higher return by investing in Class A shares than incurring the ongoing sales-related costs associated with Class B and Class C shares in the same fund.However, in the absence of a sales charge waiver, the investor may, in certain instances, be better off investing in Class R shares (if eligible) rather than Class A, B or C shares because of the impact of the sales charge in Class A shares on the return and the lower ongoing fees and expenses associated with certain Class R shares.7.Sales charges and fees associated with different share classes also affect a broker-dealer’s revenue earned from selling mutual fund shares.  Broker-dealers typically receive all or a portion of the sales charges and Rule 12b-1 fees charged to their customers.  For example, broker-dealers generally receive higher ongoing fees when their customers hold Class B and Class C shares as compared to Class A or Class R shares.  Broker-dealers therefore may earn more compensation when recommending a share class to customers if the customer’s purchase of that share class will increase a broker-dealer’s revenue when compared to another share class in the same fund that the broker-dealer could recommend to the customer.3UBS Omitted Material Facts When RecommendingClass A, Class B, and Class C Mutual Fund Shares to Eligible Customers8.From at least January 2010 through June 2015, UBS did not have adequatesystems and controls in place to determine whether a customer was eligible to purchase load-waived Class A shares or Class R shares.  As a result, UBS failed to provide available sales charge waivers in at least 113,543 transactions involving approximately 15,250 Eligible Customer accounts.  These were transactions in which Eligible Customers could have purchased load-waived Class A shares, but UBS recommended and sold them Class A shares with an up-front sales charge, or Class B or Class C shares with a CDSC and higher ongoing fees and expenses than the load-waived Class A shares.  In addition, UBS failed to provide Eligible Customers the opportunity to purchase Class R shares in at least 46,305 transactions, resulting in the Eligible Customers instead purchasing Class A shares with an up-front sales charge, or Class B or Class C shares with a CDSC and higher ongoing fees and expenses.  In connection with all of these recommendations, UBS omitted to state to Eligible Customers that it would earn more revenue from customer purchases of Class A shares with an up-front sales charge or Class B or Class C shares with a CDSC and higher ongoing expenses as compared to load-waived Class A shares and no-load Class R shares for which the customers were eligible.  UBS omitted material information concerning its compensation when it recommended the more expensive share classes.  UBS also omitted to state to the Eligible Customers that their purchases of the more expensive shares would negatively impact the customers’ overall investment returns.  In the context of multiple-share-class mutual funds, in which the only reason for the differences in rate of return among classes is the cost structure of the different classes, information about this cost structure would accordingly be important to a reasonable investor.  UBS has identified the Eligible Customers who purchased more expensive shares than those shares for which they were eligible.9.Eligible Customers paid a total of $18,529,533 in up-front sales charges, CDSCs,and higher ongoing fees and expenses from purchases of mutual fund share classes for which they did not receive an applicable sales charge waiver or did not otherwise receive the most cost-effective share class for which they were eligible that was available on UBS’s platform during the Relevant Period.  UBS has issued payments (including interest) to all Eligible Customers who purchased more expensive shares than those shares for which they were eligible, crediting the accounts of current customers and mailing reimbursement checks to former customers.UBS also has converted all Eligible Customers holding Class B and Class C shares to Class A or Class R shares with the lowest expenses for which they are eligible, at no cost to the customers.Violations10.As a result of the conduct described above, UBS willfully violated Sections17(a)(2) and 17(a)(3) of the Securities Act, which prohibit any person, in the offer or sale of securities, from obtaining money or property by means of any untrue statement of material fact or any omission to state a material fact necessary in order to make statements made not misleading, and from engaging in any transaction, practice, or course of business which operates4or would operate as a fraud or deceit upon the purchaser, respectively.2  UBS omitted to state to Eligible Customers that UBS would earn greater compensation in recommending Class A shares with an up-front sales charge, or Class B or Class C shares with a CDSC and higher ongoing fees and expenses, because these share classes would generate additional revenue for UBS compared to other less expensive share classes available to Eligible Customers.  Thus, Eligible Customers did not have sufficient information to understand that UBS had a conflict of interest resulting from sales of the more expensive share classes.  UBS also omitted to state to the Eligible Customers that the purchase of these more expensive shares would negatively impact the customers’ overall investment returns, in light of the different fee structures for the different fund share classes.  As a result, Eligible Customers incurred up-front sales charges, CDSCs, and higher ongoing fees and expenses, and UBS received additional revenue.Undertakings11.UBS undertakes to make reasonable additional efforts to locate and/or contact Eligible Customers who either have not yet cashed or deposited their payments, or who have changed addresses, to attempt to complete distribution of approximately $617,490 to approximately 970 outstanding payees as of September 11, 2017.12.  Within 180 days of the date of this Order, UBS will provide to the CommissionStaff a final accounting and certification specifying, as to these outstanding payments:i.ii.iii.all payments that were completed (including the amount as to each Eligible Customer); payments that could not be completed despite UBS’s reasonable additional efforts to locate and/or contact these Eligible Customers; and a description of the additional efforts made to locate and/or contact the Eligible Customers.Any and all supporting documentation for the accounting and certification will be provided to the Commission staff upon request.  UBS will cooperate with any reasonable requests by the Commission staff for information in connection with the accounting and certification.13.UBS agrees to be responsible for all of UBS’s tax compliance responsibilitiesassociated with the outstanding payments and will retain any professional services necessary.  The costs and expenses of any such professional services will be borne by UBS, and the payment of taxes applicable to the outstanding payments, if any, will not be paid out of the outstanding payments.2  A willful violation of the securities laws means merely “‘that the person charged with the duty knows what he is doing.’” Wonsover v. SEC, 205 F.3d 408, 414 (D.C. Cir. 2000) (quoting Hughes v. SEC, 174 F.2d 969, 977 (D.C. Cir. 1949)).  There is no requirement that the actor “‘also be aware that he is violating one of the Rules or Acts.’” Id. (quoting Gearhart & Otis, Inc. v. SEC, 348 F.2d 798, 803 (D.C. Cir. 1965)).514.Commission staff may extend, upon request by UBS, the procedural date set forthin paragraph 12  above for good cause shown.  Deadlines for the procedural date set forth in paragraph 12 above shall be counted in  calendar days, except if the last day falls on a weekend or federal holiday, the next business day  shall be considered to be the last day.15.UBS’s Remedial EffortsIn determining to accept the Offer, the Commission considered remedial actspromptly undertaken by UBS, its undertaking and cooperation afforded the Commission staff.IV.In view of the foregoing, the Commission deems it appropriate and in the public interestto impose the sanctions  agreed to in Respondent’s Offer.Accordingly, pursuant to Section 8A of the Securities Act, Section 15(b)(4) of theExchange Act, and Section 203(e) of the Advisers Act, it is hereby  ORDERED that:A.Respondent UBS cease and desist from committing or  causing any violations andany future violations of Sections 17(a)(2) and 17(a)(3)  of the Securities Act.B.Respondent UBS is  censured.C.Respondent UBS shall, within 30 days of the entry of this Order,  pay a civil money penalty of $3,500,000 to the Securities and Exchange  Commission for transfer to the general fund of the United States Treasury in  accordance with Exchange Act Section 21F(g)(3).If timely payment is not made,  additional interest shall accrue pursuant to 31 U.S.C. § 3717.Payment must be made  in one of the following ways:(1) Respondent UBS may transmit payment electronically to the Commission,which will provide detailed ACH transfer/Fedwire instructions upon  request;(2) Respondent UBS may make direct payment from a bank account via Pay.govthrough the SEC website at http://www.sec.gov/about/offices/ofm.htm; or(3) Respondent UBS may pay by certified check, bank cashier’s check, or UnitedStates postal money order, made payable to the Securities and Exchange Commission and hand-delivered or mailed to:Enterprise Services Center  Accounts Receivable BranchHQ Bldg., Room 181, AMZ-341 6500 South MacArthur Boulevard Oklahoma City, OK 73169Payments by check or money order must be accompanied by a cover letter identifying UBS Financial Services Inc. as a Respondent in these  proceedings, and the file number of these6proceedings.  A copy of the cover letter and check or  money order must be simultaneously sent to Valerie A. Szczepanik, Assistant Regional Director,  New York Regional Office, Securities and Exchange Commission, Brookfield Place, 200 Vesey Street, Suite 400, New York, NY10281-1022, or such other person or address as the Commission staff may provide.D.Amounts ordered to be paid as civil money penalties pursuant to this Order shallbe treated as penalties paid to the government for all purposes, including all tax purposes.  To preserve the deterrent effect of the civil penalty, Respondent agrees that in any Related Investor Action, it shall not argue that it is entitled to, nor shall it benefit by, offset or reduction of any award of compensatory damages by the amount of any part of Respondent’s payment of a civil penalty in this action (“Penalty Offset”).  If the court in any Related Investor Action grants such a Penalty Offset, Respondent agrees that it shall, within 30 days after entry of a final order granting the Penalty Offset, notify the Commission’s counsel in this action and pay the amount of the Penalty Offset to the Securities and Exchange Commission.  Such a payment shall not be deemed an additional civil penalty and shall not be deemed to change the amount of the civil penalty imposed in these proceedings.  For purposes of this paragraph, a “Related Investor Action” means a private damages action brought against Respondent by or on behalf of one or more investors based on substantially the same facts as alleged in the Order instituted by the Commission in these proceedings.By the Commission.Brent J. FieldsSecretary7']}"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 11
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "dG4hi2Y0Fw_C",
+        "colab_type": "code",
+        "outputId": "595ec9ff-955b-4cf2-9530-25ba05d374a8",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 67
+        }
+      },
+      "source": [
+        "import pandas as pd\n",
+        "df = pd.DataFrame(data)\n",
+        " \n",
+        "print(df)\n",
+        "type(df)"
+      ],
+      "execution_count": 0,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "                                                Name\n",
+            "0  UNITED STATES OF AMERICABefore theSECURITIES A...\n"
+          ],
+          "name": "stdout"
+        },
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "pandas.core.frame.DataFrame"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 13
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "GWDyTkxhHrQI",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "from textblob import TextBlob\n",
+        "\n",
+        "pol = lambda x: TextBlob(x).sentiment.polarity\n",
+        "sub = lambda x: TextBlob(x).sentiment.subjectivity\n"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "OKCvjW8GEf1t",
+        "colab_type": "code",
+        "outputId": "09053361-06cd-4b62-cf7f-d36b0b8aa3e7",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 84
+        }
+      },
+      "source": [
+        "polarity = df['Name'].apply(pol)\n",
+        "# type(polarity)\n",
+        "subject = df['Name'].apply(sub)\n",
+        "\n",
+        "print(polarity)\n",
+        "print(subject)"
+      ],
+      "execution_count": 0,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "0    0.074796\n",
+            "Name: Name, dtype: float64\n",
+            "0    0.471086\n",
+            "Name: Name, dtype: float64\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "7nK0DfqiRRA6",
+        "colab_type": "code",
+        "outputId": "d0e5a9ef-7333-47dc-95b6-b69449295313",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 77
+        }
+      },
+      "source": [
+        "frame = {'Data':[finallist1]}\n",
+        "dataframe = pd.DataFrame(zip(finallist1,polarity,subject),columns=['Data','Polarity','Subjectivity'])\n",
+        "dataframe"
+      ],
+      "execution_count": 0,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>Data</th>\n",
+              "      <th>Polarity</th>\n",
+              "      <th>Subjectivity</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>0</th>\n",
+              "      <td>UNITED STATES OF AMERICABefore theSECURITIES A...</td>\n",
+              "      <td>0.074796</td>\n",
+              "      <td>0.471086</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "                                                Data  Polarity  Subjectivity\n",
+              "0  UNITED STATES OF AMERICABefore theSECURITIES A...  0.074796      0.471086"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 19
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "VaxGhLDOJi5B",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "dataframe.to_csv('Rule_Based_Sentiment_UBS_Services.csv', index_label='index')\n",
+        "\n"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "CXpwb6BlJ-gb",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "pip install shorttext"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "PUP1tY8RMQZU",
+        "colab_type": "code",
+        "outputId": "f72392c2-4c43-4af5-f2a2-223505635b47",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 133
+        }
+      },
+      "source": [
+        "import shorttext\n",
+        "import numpy as np\n",
+        "import pandas as pd\n",
+        "import re"
+      ],
+      "execution_count": 0,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "Using TensorFlow backend.\n"
+          ],
+          "name": "stderr"
+        },
+        {
+          "output_type": "display_data",
+          "data": {
+            "text/html": [
+              "<p style=\"color: red;\">\n",
+              "The default version of TensorFlow in Colab will soon switch to TensorFlow 2.x.<br>\n",
+              "We recommend you <a href=\"https://www.tensorflow.org/guide/migrate\" target=\"_blank\">upgrade</a> now \n",
+              "or ensure your notebook will continue to use TensorFlow 1.x via the <code>%tensorflow_version 1.x</code> magic:\n",
+              "<a href=\"https://colab.research.google.com/notebooks/tensorflow_version.ipynb\" target=\"_blank\">more info</a>.</p>\n"
+            ],
+            "text/plain": [
+              "<IPython.core.display.HTML object>"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          }
+        },
+        {
+          "output_type": "stream",
+          "text": [
+            "/usr/local/lib/python3.6/dist-packages/sklearn/externals/joblib/__init__.py:15: FutureWarning: sklearn.externals.joblib is deprecated in 0.21 and will be removed in 0.23. Please import this functionality directly from joblib, which can be installed with: pip install joblib. If this warning is raised when loading pickled models, you may need to re-serialize those models with scikit-learn 0.21+.\n",
+            "  warnings.warn(msg, category=FutureWarning)\n"
+          ],
+          "name": "stderr"
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "hKbOpdqsMXnU",
+        "colab_type": "code",
+        "outputId": "6ce1fd04-7126-47d3-82af-fb550b823ec5",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 128
+        }
+      },
+      "source": [
+        "from stemming.porter import stem"
+      ],
+      "execution_count": 0,
+      "outputs": [
+        {
+          "output_type": "error",
+          "ename": "SyntaxError",
+          "evalue": "ignored",
+          "traceback": [
+            "\u001b[0;36m  File \u001b[0;32m\"/usr/local/lib/python3.6/dist-packages/stemming/porter.py\"\u001b[0;36m, line \u001b[0;32m176\u001b[0m\n\u001b[0;31m    print stem(\"fundamentally\")\u001b[0m\n\u001b[0m             ^\u001b[0m\n\u001b[0;31mSyntaxError\u001b[0m\u001b[0;31m:\u001b[0m invalid syntax\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "OkzuUYOTMcvV",
+        "colab_type": "code",
+        "outputId": "b49e4dd7-172e-467d-a3bd-a5677f6b048a",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 34
+        }
+      },
+      "source": [
+        "pipeline = [lambda s: re.sub('[^\\w\\s]', '', s),\n",
+        "            lambda s: re.sub('[\\d]', '', s),\n",
+        "            lambda s: s.lower(),\n",
+        "            \n",
+        " ]\n",
+        "txtpreproceesor = shorttext.utils.text_preprocessor(pipeline)\n",
+        "txtpreproceesor"
+      ],
+      "execution_count": 0,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "<function shorttext.utils.textpreprocessing.text_preprocessor.<locals>.<lambda>>"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 23
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "EQSsIM_dMhI6",
+        "colab_type": "code",
+        "outputId": "1232bdc9-3d9d-4d2d-e6a9-cf7f196789c7",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 77
+        }
+      },
+      "source": [
+        "docx = pd.read_csv('Rule_Based_Sentiment_UBS_Services.csv')\n",
+        "docx"
+      ],
+      "execution_count": 0,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>index</th>\n",
+              "      <th>Data</th>\n",
+              "      <th>Polarity</th>\n",
+              "      <th>Subjectivity</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>0</th>\n",
+              "      <td>0</td>\n",
+              "      <td>UNITED STATES OF AMERICABefore theSECURITIES A...</td>\n",
+              "      <td>0.074796</td>\n",
+              "      <td>0.471086</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "   index  ... Subjectivity\n",
+              "0      0  ...     0.471086\n",
+              "\n",
+              "[1 rows x 4 columns]"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 24
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "9Ad1c9baMwED",
+        "colab_type": "text"
+      },
+      "source": [
+        "Topic Modelling"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "1AqzhMBDMyCI",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "docids = list(docx['index'])\n",
+        "corpus = [txtpreproceesor(Data).split(' ') for Data in docx['Data']]\n",
+        "# corpus = [txtpreproceesor(Data).split(' ') for Data in usprezdf['Data']]\n",
+        "corpus"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "IvXiyEBlRkKd",
+        "colab_type": "code",
+        "outputId": "c3ca9694-8071-4684-9a7f-584e2dbda921",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 34
+        }
+      },
+      "source": [
+        "dtm = shorttext.utils.DocumentTermMatrix(corpus, docids=docids, tfidf=False)\n",
+        "print(dtm)"
+      ],
+      "execution_count": 0,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "<shorttext.utils.dtm.DocumentTermMatrix object at 0x7fe9947f5e80>\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "25VvtYTsRmwS",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "pip install gensim"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "hJCuCJohRrgi",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "from gensim import matutils, models\n",
+        "import scipy.sparse"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "YdUxgaFvRt3x",
+        "colab_type": "code",
+        "outputId": "7b4369c5-347e-4dca-f6d1-b73638bdae50",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 166
+        }
+      },
+      "source": [
+        "tdm = docx.transpose()\n",
+        "tdm.head()"
+      ],
+      "execution_count": 0,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>0</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>index</th>\n",
+              "      <td>0</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>Data</th>\n",
+              "      <td>ADMINISTRATIVE PROCEEDING File No. 3-18270SEC ...</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>Polarity</th>\n",
+              "      <td>0.0747963</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>Subjectivity</th>\n",
+              "      <td>0.471086</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "                                                              0\n",
+              "index                                                         0\n",
+              "Data          ADMINISTRATIVE PROCEEDING File No. 3-18270SEC ...\n",
+              "Polarity                                              0.0747963\n",
+              "Subjectivity                                           0.471086"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 188
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "rKs3zFqJRy7W",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "from nltk import word_tokenize, pos_tag\n",
+        "\n",
+        "def nouns(text):\n",
+        "    '''Given a string of text, tokenize the text and pull out only the nouns.'''\n",
+        "    is_noun = lambda pos: pos[:2] == 'NN'\n",
+        "    tokenized = word_tokenize(text)\n",
+        "    all_nouns = [word for (word, pos) in pos_tag(tokenized) if is_noun(pos)] \n",
+        "    return ' '.join(all_nouns)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "eOUdgllJR1ai",
+        "colab_type": "code",
+        "outputId": "74764d26-ee2e-470c-ab48-ec0adfd4316d",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 118
+        }
+      },
+      "source": [
+        "import nltk\n",
+        "nltk.download('averaged_perceptron_tagger')\n",
+        "nltk.download('punkt')  "
+      ],
+      "execution_count": 0,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "[nltk_data] Downloading package averaged_perceptron_tagger to\n",
+            "[nltk_data]     /root/nltk_data...\n",
+            "[nltk_data]   Unzipping taggers/averaged_perceptron_tagger.zip.\n",
+            "[nltk_data] Downloading package punkt to /root/nltk_data...\n",
+            "[nltk_data]   Unzipping tokenizers/punkt.zip.\n"
+          ],
+          "name": "stdout"
+        },
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "True"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 112
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "kQHSHjR3R5i9",
+        "colab_type": "code",
+        "outputId": "2aa03da0-19b0-478d-ad6b-12dd1620ea91",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 77
+        }
+      },
+      "source": [
+        "data_nouns = pd.DataFrame(docx.Data.apply(nouns))\n",
+        "data_nouns"
+      ],
+      "execution_count": 0,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>Data</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>0</th>\n",
+              "      <td>PROCEEDING File No Charges UBS Connection Mutu...</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "                                                Data\n",
+              "0  PROCEEDING File No Charges UBS Connection Mutu..."
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 190
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "eGja083KR7N0",
+        "colab_type": "code",
+        "outputId": "e4bb4e04-c203-40a8-de87-5cf831b63bf4",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 126
+        }
+      },
+      "source": [
+        "# Create a new document-term matrix using only nouns\n",
+        "from sklearn.feature_extraction import text\n",
+        "from sklearn.feature_extraction.text import CountVectorizer\n",
+        "\n",
+        "# Re-add the additional stop words since we are recreating the document-term matrix\n",
+        "add_stop_words = ['like', 'im', 'know', 'just', 'dont', 'thats', 'right', 'people',\n",
+        "                  'youre', 'got', 'gonna', 'time', 'think', 'yeah', 'said']\n",
+        "stop_words = text.ENGLISH_STOP_WORDS.union(add_stop_words)\n",
+        "\n",
+        "# Recreate a document-term matrix with only nouns\n",
+        "cvn = CountVectorizer(stop_words=stop_words)\n",
+        "data_cvn = cvn.fit_transform(data_nouns.Data)\n",
+        "data_dtmn = pd.DataFrame(data_cvn.toarray(), columns=cvn.get_feature_names())\n",
+        "data_dtmn.index = data_nouns.index\n",
+        "data_dtmn"
+      ],
+      "execution_count": 0,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>according</th>\n",
+              "      <th>account</th>\n",
+              "      <th>accounts</th>\n",
+              "      <th>accountsoctober</th>\n",
+              "      <th>act</th>\n",
+              "      <th>addresses</th>\n",
+              "      <th>adviser</th>\n",
+              "      <th>analysis</th>\n",
+              "      <th>analytics</th>\n",
+              "      <th>asset</th>\n",
+              "      <th>assistant</th>\n",
+              "      <th>broker</th>\n",
+              "      <th>brokerage</th>\n",
+              "      <th>censure</th>\n",
+              "      <th>charge</th>\n",
+              "      <th>charges</th>\n",
+              "      <th>charitable</th>\n",
+              "      <th>class</th>\n",
+              "      <th>classes</th>\n",
+              "      <th>commission</th>\n",
+              "      <th>compensation</th>\n",
+              "      <th>compliance</th>\n",
+              "      <th>connection</th>\n",
+              "      <th>contingent</th>\n",
+              "      <th>cost</th>\n",
+              "      <th>customer</th>\n",
+              "      <th>customers</th>\n",
+              "      <th>data</th>\n",
+              "      <th>dealer</th>\n",
+              "      <th>director</th>\n",
+              "      <th>division</th>\n",
+              "      <th>efforts</th>\n",
+              "      <th>eligibility</th>\n",
+              "      <th>enforcement</th>\n",
+              "      <th>examination</th>\n",
+              "      <th>examinations</th>\n",
+              "      <th>exchange</th>\n",
+              "      <th>expenses</th>\n",
+              "      <th>failures</th>\n",
+              "      <th>farinacci</th>\n",
+              "      <th>...</th>\n",
+              "      <th>investigation</th>\n",
+              "      <th>investment</th>\n",
+              "      <th>investments</th>\n",
+              "      <th>january</th>\n",
+              "      <th>john</th>\n",
+              "      <th>june</th>\n",
+              "      <th>licardo</th>\n",
+              "      <th>light</th>\n",
+              "      <th>management</th>\n",
+              "      <th>mutual</th>\n",
+              "      <th>new</th>\n",
+              "      <th>office</th>\n",
+              "      <th>ongoing</th>\n",
+              "      <th>order</th>\n",
+              "      <th>organization</th>\n",
+              "      <th>payments</th>\n",
+              "      <th>penalty</th>\n",
+              "      <th>proceeding</th>\n",
+              "      <th>purchases</th>\n",
+              "      <th>result</th>\n",
+              "      <th>retirement</th>\n",
+              "      <th>return</th>\n",
+              "      <th>risk</th>\n",
+              "      <th>sales</th>\n",
+              "      <th>sec</th>\n",
+              "      <th>sections</th>\n",
+              "      <th>securities</th>\n",
+              "      <th>services</th>\n",
+              "      <th>share</th>\n",
+              "      <th>structures</th>\n",
+              "      <th>support</th>\n",
+              "      <th>szczepanik</th>\n",
+              "      <th>team</th>\n",
+              "      <th>today</th>\n",
+              "      <th>total</th>\n",
+              "      <th>ubs</th>\n",
+              "      <th>unit</th>\n",
+              "      <th>valerie</th>\n",
+              "      <th>waivers</th>\n",
+              "      <th>york</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>0</th>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>2</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>4</td>\n",
+              "      <td>1</td>\n",
+              "      <td>2</td>\n",
+              "      <td>4</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>8</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>2</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>...</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>2</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>4</td>\n",
+              "      <td>1</td>\n",
+              "      <td>2</td>\n",
+              "      <td>1</td>\n",
+              "      <td>2</td>\n",
+              "      <td>2</td>\n",
+              "      <td>1</td>\n",
+              "      <td>3</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>4</td>\n",
+              "      <td>4</td>\n",
+              "      <td>1</td>\n",
+              "      <td>2</td>\n",
+              "      <td>1</td>\n",
+              "      <td>8</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>10</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>2</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "<p>1 rows × 89 columns</p>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "   according  account  accounts  accountsoctober  ...  unit  valerie  waivers  york\n",
+              "0          1        1         2                1  ...     1        1        1     2\n",
+              "\n",
+              "[1 rows x 89 columns]"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 191
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "DzDEYCKzSAvK",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "# Create the gensim corpus\n",
+        "corpusn = matutils.Sparse2Corpus(scipy.sparse.csr_matrix(data_dtmn.transpose()))\n",
+        "\n",
+        "# Create the vocabulary dictionary\n",
+        "id2wordn = dict((v, k) for k, v in cvn.vocabulary_.items())\n",
+        "id2wordn"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "tBgsp1vqSLeY",
+        "colab_type": "text"
+      },
+      "source": [
+        "topics with noun"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "aqtz8RvJSJFF",
+        "colab_type": "code",
+        "outputId": "56f01a62-feee-41d6-fad6-9afd68797555",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 104
+        }
+      },
+      "source": [
+        "# Let's start with 2 topics\n",
+        "ldan = models.LdaModel(corpus=corpusn, num_topics=2, id2word=id2wordn, passes=10)\n",
+        "ldan.print_topics()"
+      ],
+      "execution_count": 0,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "[(0,\n",
+              "  '0.056*\"ubs\" + 0.045*\"customers\" + 0.045*\"share\" + 0.029*\"fund\" + 0.024*\"charges\" + 0.024*\"sec\" + 0.024*\"classes\" + 0.024*\"sales\" + 0.024*\"order\" + 0.019*\"retirement\"'),\n",
+              " (1,\n",
+              "  '0.012*\"ubs\" + 0.012*\"share\" + 0.012*\"customers\" + 0.011*\"order\" + 0.011*\"fund\" + 0.011*\"sales\" + 0.011*\"classes\" + 0.011*\"sec\" + 0.011*\"retirement\" + 0.011*\"charges\"')]"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 193
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "dxUHdx0GSN65",
+        "colab_type": "code",
+        "outputId": "ce2a74f7-bb0b-4fa0-87c8-925e6a7d1f8c",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 171
+        }
+      },
+      "source": [
+        "# Let's try 4 topics\n",
+        "ldan = models.LdaModel(corpus=corpusn, num_topics=4, id2word=id2wordn, passes=10)\n",
+        "ldan.print_topics()"
+      ],
+      "execution_count": 0,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "[(0,\n",
+              "  '0.012*\"ubs\" + 0.011*\"customers\" + 0.011*\"share\" + 0.011*\"fund\" + 0.011*\"sales\" + 0.011*\"classes\" + 0.011*\"sec\" + 0.011*\"retirement\" + 0.011*\"order\" + 0.011*\"charges\"'),\n",
+              " (1,\n",
+              "  '0.012*\"ubs\" + 0.012*\"customers\" + 0.012*\"share\" + 0.011*\"order\" + 0.011*\"classes\" + 0.011*\"sales\" + 0.011*\"charges\" + 0.011*\"fund\" + 0.011*\"payments\" + 0.011*\"retirement\"'),\n",
+              " (2,\n",
+              "  '0.012*\"ubs\" + 0.012*\"share\" + 0.012*\"customers\" + 0.012*\"fund\" + 0.012*\"classes\" + 0.011*\"order\" + 0.011*\"charges\" + 0.011*\"sec\" + 0.011*\"sales\" + 0.011*\"retirement\"'),\n",
+              " (3,\n",
+              "  '0.062*\"ubs\" + 0.050*\"share\" + 0.050*\"customers\" + 0.032*\"fund\" + 0.026*\"sec\" + 0.026*\"charges\" + 0.026*\"sales\" + 0.026*\"order\" + 0.026*\"classes\" + 0.020*\"retirement\"')]"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 194
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "hEpNoL6lSWN1",
+        "colab_type": "text"
+      },
+      "source": [
+        "noun abd adjective"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "eC1wSjplSVCN",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "# Let's create a function to pull out nouns from a string of text\n",
+        "def nouns_adj(text):\n",
+        "    '''Given a string of text, tokenize the text and pull out only the nouns and adjectives.'''\n",
+        "    is_noun_adj = lambda pos: pos[:2] == 'NN' or pos[:2] == 'JJ'\n",
+        "    tokenized = word_tokenize(text)\n",
+        "    nouns_adj = [word for (word, pos) in pos_tag(tokenized) if is_noun_adj(pos)] \n",
+        "    return ' '.join(nouns_adj)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "KZ0LsJ94Sbsg",
+        "colab_type": "code",
+        "outputId": "413b53c9-de7c-4057-a1af-b6905e1ca919",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 77
+        }
+      },
+      "source": [
+        "# Apply the nouns function to the transcripts to filter only on nouns\n",
+        "data_nouns_adj = pd.DataFrame(docx.Data.apply(nouns_adj))\n",
+        "data_nouns_adj"
+      ],
+      "execution_count": 0,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>Data</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>0</th>\n",
+              "      <td>ADMINISTRATIVE PROCEEDING File No 3-18270SEC C...</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "                                                Data\n",
+              "0  ADMINISTRATIVE PROCEEDING File No 3-18270SEC C..."
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 196
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "Jy1-PJrLSe60",
+        "colab_type": "code",
+        "outputId": "f48d7f4f-965c-4cd5-96fe-eb1aaef51172",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 126
+        }
+      },
+      "source": [
+        "# Create a new document-term matrix using only nouns and adjectives, also remove common words with max_df\n",
+        "cvna = CountVectorizer(stop_words=stop_words)\n",
+        "data_cvna = cvna.fit_transform(data_nouns_adj.Data)\n",
+        "data_dtmna = pd.DataFrame(data_cvna.toarray(), columns=cvna.get_feature_names())\n",
+        "data_dtmna.index = data_nouns_adj.index\n",
+        "data_dtmna"
+      ],
+      "execution_count": 0,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>18270sec</th>\n",
+              "      <th>according</th>\n",
+              "      <th>account</th>\n",
+              "      <th>accounts</th>\n",
+              "      <th>accountsoctober</th>\n",
+              "      <th>act</th>\n",
+              "      <th>additional</th>\n",
+              "      <th>addresses</th>\n",
+              "      <th>administrative</th>\n",
+              "      <th>adviser</th>\n",
+              "      <th>analysis</th>\n",
+              "      <th>analytics</th>\n",
+              "      <th>asset</th>\n",
+              "      <th>assistant</th>\n",
+              "      <th>available</th>\n",
+              "      <th>broker</th>\n",
+              "      <th>brokerage</th>\n",
+              "      <th>cease</th>\n",
+              "      <th>censure</th>\n",
+              "      <th>certain</th>\n",
+              "      <th>charge</th>\n",
+              "      <th>charges</th>\n",
+              "      <th>charitable</th>\n",
+              "      <th>civil</th>\n",
+              "      <th>class</th>\n",
+              "      <th>classes</th>\n",
+              "      <th>commission</th>\n",
+              "      <th>compensation</th>\n",
+              "      <th>compliance</th>\n",
+              "      <th>connection</th>\n",
+              "      <th>contingent</th>\n",
+              "      <th>cost</th>\n",
+              "      <th>customer</th>\n",
+              "      <th>customers</th>\n",
+              "      <th>data</th>\n",
+              "      <th>dealer</th>\n",
+              "      <th>desist</th>\n",
+              "      <th>different</th>\n",
+              "      <th>director</th>\n",
+              "      <th>division</th>\n",
+              "      <th>...</th>\n",
+              "      <th>licardo</th>\n",
+              "      <th>light</th>\n",
+              "      <th>lower</th>\n",
+              "      <th>lowest</th>\n",
+              "      <th>management</th>\n",
+              "      <th>mutual</th>\n",
+              "      <th>new</th>\n",
+              "      <th>office</th>\n",
+              "      <th>ongoing</th>\n",
+              "      <th>order</th>\n",
+              "      <th>organization</th>\n",
+              "      <th>overall</th>\n",
+              "      <th>payments</th>\n",
+              "      <th>penalty</th>\n",
+              "      <th>proceeding</th>\n",
+              "      <th>purchases</th>\n",
+              "      <th>registered</th>\n",
+              "      <th>result</th>\n",
+              "      <th>retail</th>\n",
+              "      <th>retirement</th>\n",
+              "      <th>return</th>\n",
+              "      <th>risk</th>\n",
+              "      <th>sales</th>\n",
+              "      <th>sec</th>\n",
+              "      <th>sections</th>\n",
+              "      <th>securities</th>\n",
+              "      <th>services</th>\n",
+              "      <th>settled</th>\n",
+              "      <th>share</th>\n",
+              "      <th>structures</th>\n",
+              "      <th>support</th>\n",
+              "      <th>szczepanik</th>\n",
+              "      <th>team</th>\n",
+              "      <th>today</th>\n",
+              "      <th>total</th>\n",
+              "      <th>ubs</th>\n",
+              "      <th>unit</th>\n",
+              "      <th>valerie</th>\n",
+              "      <th>waivers</th>\n",
+              "      <th>york</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>0</th>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>2</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>2</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>2</td>\n",
+              "      <td>1</td>\n",
+              "      <td>3</td>\n",
+              "      <td>1</td>\n",
+              "      <td>4</td>\n",
+              "      <td>3</td>\n",
+              "      <td>1</td>\n",
+              "      <td>2</td>\n",
+              "      <td>4</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>8</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>2</td>\n",
+              "      <td>2</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>...</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>5</td>\n",
+              "      <td>2</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>4</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>2</td>\n",
+              "      <td>1</td>\n",
+              "      <td>2</td>\n",
+              "      <td>2</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>3</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>4</td>\n",
+              "      <td>4</td>\n",
+              "      <td>1</td>\n",
+              "      <td>2</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>8</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>10</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>2</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "<p>1 rows × 108 columns</p>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "   18270sec  according  account  accounts  ...  unit  valerie  waivers  york\n",
+              "0         1          1        1         2  ...     1        1        1     2\n",
+              "\n",
+              "[1 rows x 108 columns]"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 197
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "vcUWFdsDTA8n",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "# Create the gensim corpus\n",
+        "corpusna = matutils.Sparse2Corpus(scipy.sparse.csr_matrix(data_dtmna.transpose()))\n",
+        "\n",
+        "# Create the vocabulary dictionary\n",
+        "id2wordna = dict((v, k) for k, v in cvna.vocabulary_.items())"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "95QYSqUHTDmz",
+        "colab_type": "code",
+        "outputId": "7aa79e44-4cd0-4679-e0a6-ce37cd9a467a",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 104
+        }
+      },
+      "source": [
+        "# Let's start with 2 topics\n"
+      ],
+      "execution_count": 0,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "[(0,\n",
+              "  '0.045*\"ubs\" + 0.036*\"share\" + 0.036*\"customers\" + 0.024*\"expensive\" + 0.024*\"fund\" + 0.024*\"mutual\" + 0.019*\"classes\" + 0.019*\"sec\" + 0.019*\"sales\" + 0.019*\"charges\"'),\n",
+              " (1,\n",
+              "  '0.010*\"ubs\" + 0.010*\"customers\" + 0.010*\"share\" + 0.010*\"mutual\" + 0.009*\"order\" + 0.009*\"fund\" + 0.009*\"expensive\" + 0.009*\"charges\" + 0.009*\"sales\" + 0.009*\"sec\"')]"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 129
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "w1uCHqaEgdX7",
+        "colab_type": "code",
+        "outputId": "d8ff9021-30e8-4755-d3d4-2ff015db2c5d",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 171
+        }
+      },
+      "source": [
+        "# Let's try 4 topics\n",
+        "ldana = models.LdaModel(corpus=corpusna, num_topics=4, id2word=id2wordna, passes=10)\n",
+        "ldana.print_topics()"
+      ],
+      "execution_count": 0,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "[(0,\n",
+              "  '0.010*\"ubs\" + 0.010*\"customers\" + 0.010*\"share\" + 0.009*\"expensive\" + 0.009*\"fund\" + 0.009*\"order\" + 0.009*\"sec\" + 0.009*\"mutual\" + 0.009*\"classes\" + 0.009*\"certain\"'),\n",
+              " (1,\n",
+              "  '0.010*\"share\" + 0.010*\"ubs\" + 0.009*\"mutual\" + 0.009*\"customers\" + 0.009*\"expensive\" + 0.009*\"order\" + 0.009*\"fund\" + 0.009*\"sales\" + 0.009*\"charges\" + 0.009*\"classes\"'),\n",
+              " (2,\n",
+              "  '0.010*\"ubs\" + 0.010*\"share\" + 0.010*\"customers\" + 0.010*\"mutual\" + 0.010*\"classes\" + 0.010*\"expensive\" + 0.010*\"charges\" + 0.010*\"fund\" + 0.010*\"sales\" + 0.009*\"order\"'),\n",
+              " (3,\n",
+              "  '0.050*\"ubs\" + 0.040*\"customers\" + 0.040*\"share\" + 0.025*\"fund\" + 0.025*\"expensive\" + 0.025*\"mutual\" + 0.021*\"sec\" + 0.021*\"sales\" + 0.021*\"charges\" + 0.021*\"order\"')]"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 204
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "rvEVg7IJTGqv",
+        "colab_type": "code",
+        "outputId": "443d3e53-b3ff-4dd3-c7c7-ee19218f8d77",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 1000
+        }
+      },
+      "source": [
+        "# Let's try 4 topics\n",
+        "ldana = models.LdaModel(corpus=corpusna, num_topics=10, id2word=id2wordna, passes=10)\n",
+        "\n",
+        "\n",
+        "ldana.top_topics(corpus=corpusna, topn=10, processes=1)"
+      ],
+      "execution_count": 0,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "[([(0.05320925, 'ubs'),\n",
+              "   (0.042670477, 'customers'),\n",
+              "   (0.042659305, 'share'),\n",
+              "   (0.026876306, 'mutual'),\n",
+              "   (0.026862035, 'expensive'),\n",
+              "   (0.026854167, 'fund'),\n",
+              "   (0.02161045, 'charges'),\n",
+              "   (0.021610346, 'sales'),\n",
+              "   (0.021594519, 'classes'),\n",
+              "   (0.021593401, 'order')],\n",
+              "  1.0000889005818412e-12),\n",
+              " ([(0.010834727, 'share'),\n",
+              "   (0.010672837, 'ubs'),\n",
+              "   (0.010556397, 'customers'),\n",
+              "   (0.010061007, 'expensive'),\n",
+              "   (0.009899212, 'sec'),\n",
+              "   (0.009833626, 'fund'),\n",
+              "   (0.009754071, 'order'),\n",
+              "   (0.009614812, 'classes'),\n",
+              "   (0.009610336, 'certain'),\n",
+              "   (0.009572478, 'mutual')],\n",
+              "  1.0000889005818412e-12),\n",
+              " ([(0.011459452, 'ubs'),\n",
+              "   (0.010851703, 'customers'),\n",
+              "   (0.010331026, 'share'),\n",
+              "   (0.010318715, 'fund'),\n",
+              "   (0.010084946, 'mutual'),\n",
+              "   (0.00999177, 'expensive'),\n",
+              "   (0.0099020405, 'classes'),\n",
+              "   (0.009838513, 'order'),\n",
+              "   (0.009805947, 'sec'),\n",
+              "   (0.009761824, 'certain')],\n",
+              "  1.0000889005818412e-12),\n",
+              " ([(0.010123645, 'share'),\n",
+              "   (0.009974035, 'ubs'),\n",
+              "   (0.009733165, 'customers'),\n",
+              "   (0.009612023, 'expensive'),\n",
+              "   (0.009587998, 'charges'),\n",
+              "   (0.00957234, 'sec'),\n",
+              "   (0.009548786, 'mutual'),\n",
+              "   (0.009503054, 'order'),\n",
+              "   (0.009483417, 'classes'),\n",
+              "   (0.009477118, 'sales')],\n",
+              "  1.0000889005818412e-12),\n",
+              " ([(0.0098128505, 'ubs'),\n",
+              "   (0.0096533075, 'share'),\n",
+              "   (0.009586747, 'mutual'),\n",
+              "   (0.009556385, 'customers'),\n",
+              "   (0.009502695, 'classes'),\n",
+              "   (0.00949964, 'fund'),\n",
+              "   (0.009456031, 'sales'),\n",
+              "   (0.009452348, 'expensive'),\n",
+              "   (0.009396145, 'retirement'),\n",
+              "   (0.009376491, 'order')],\n",
+              "  1.0000889005818412e-12),\n",
+              " ([(0.00949688, 'customers'),\n",
+              "   (0.009473026, 'ubs'),\n",
+              "   (0.009470626, 'share'),\n",
+              "   (0.009422493, 'fund'),\n",
+              "   (0.009393431, 'mutual'),\n",
+              "   (0.009344441, 'charges'),\n",
+              "   (0.009336539, 'sales'),\n",
+              "   (0.00933245, 'order'),\n",
+              "   (0.009329974, 'expensive'),\n",
+              "   (0.00932799, 'certain')],\n",
+              "  1.0000889005818412e-12),\n",
+              " ([(0.009259257, 'customers'),\n",
+              "   (0.009259257, 'expensive'),\n",
+              "   (0.009259257, 'certain'),\n",
+              "   (0.009259257, 'sec'),\n",
+              "   (0.009259257, 'cease'),\n",
+              "   (0.009259257, 'fund'),\n",
+              "   (0.009259257, 'securities'),\n",
+              "   (0.009259257, 'share'),\n",
+              "   (0.009259257, 'retirement'),\n",
+              "   (0.009259257, 'charges')],\n",
+              "  1.0000889005818412e-12),\n",
+              " ([(0.009259257, 'retirement'),\n",
+              "   (0.009259257, 'classes'),\n",
+              "   (0.009259257, 'sales'),\n",
+              "   (0.009259257, 'certain'),\n",
+              "   (0.009259257, 'charges'),\n",
+              "   (0.009259257, 'charitable'),\n",
+              "   (0.009259257, 'securities'),\n",
+              "   (0.009259257, 'order'),\n",
+              "   (0.009259257, 'mutual'),\n",
+              "   (0.009259257, 'customers')],\n",
+              "  1.0000889005818412e-12),\n",
+              " ([(0.009282607, 'ubs'),\n",
+              "   (0.009277757, 'share'),\n",
+              "   (0.009277529, 'customers'),\n",
+              "   (0.009272314, 'mutual'),\n",
+              "   (0.009270797, 'expensive'),\n",
+              "   (0.009269389, 'fund'),\n",
+              "   (0.0092686275, 'order'),\n",
+              "   (0.009268267, 'certain'),\n",
+              "   (0.009265394, 'charges'),\n",
+              "   (0.009265025, 'sec')],\n",
+              "  1.0000889005818412e-12),\n",
+              " ([(0.009410163, 'ubs'),\n",
+              "   (0.009390968, 'customers'),\n",
+              "   (0.009372231, 'share'),\n",
+              "   (0.009351051, 'fund'),\n",
+              "   (0.009341246, 'mutual'),\n",
+              "   (0.009340847, 'order'),\n",
+              "   (0.009337894, 'sales'),\n",
+              "   (0.009328764, 'sec'),\n",
+              "   (0.009319428, 'expensive'),\n",
+              "   (0.009311025, 'classes')],\n",
+              "  1.0000889005818412e-12)]"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 201
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "yiIbvpiRTRjV",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "\n",
+        "# Let's take a look at which topics each transcript contains\n",
+        "corpus_transformed = ldana[corpusna]\n",
+        "d = list(zip([a for [(a, b)] in corpus_transformed], data_dtmna.index))"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "m0qxISblTTmR",
+        "colab_type": "code",
+        "outputId": "8076cb36-81a4-4927-ca17-cc808e3d065c",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 34
+        }
+      },
+      "source": [
+        "d"
+      ],
+      "execution_count": 0,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "[(0, 0)]"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 203
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "PPKUk0h0xN4R",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "import spacy\n",
+        "from spacy import displacy\n",
+        "from collections import Counter\n",
+        "import en_core_web_sm\n",
+        "nlp = en_core_web_sm.load()"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "tkWFrLlxxh_4",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "import pprint"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "DdkVvwgRzAZK",
+        "colab_type": "code",
+        "outputId": "0dd780c8-f98d-4bb3-d6b2-b2548c92b761",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 34
+        }
+      },
+      "source": [
+        "ex = docx.Data[0]\n",
+        "type(ex)"
+      ],
+      "execution_count": 0,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "str"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 28
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "wvDlL2P_xORI",
+        "colab_type": "code",
+        "outputId": "70408601-9ab7-4161-fc8d-e2478c7292ff",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 178
+        }
+      },
+      "source": [
+        "doc = nlp(ex)\n",
+        "pprint([(X.text, X.label_) for X in doc.ents])"
+      ],
+      "execution_count": 0,
+      "outputs": [
+        {
+          "output_type": "error",
+          "ename": "TypeError",
+          "evalue": "ignored",
+          "traceback": [
+            "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+            "\u001b[0;31mTypeError\u001b[0m                                 Traceback (most recent call last)",
+            "\u001b[0;32m<ipython-input-27-a3b27af1f312>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m()\u001b[0m\n\u001b[1;32m      1\u001b[0m \u001b[0mdoc\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mnlp\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mex\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 2\u001b[0;31m \u001b[0mpprint\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mX\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mtext\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mX\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mlabel_\u001b[0m\u001b[0;34m)\u001b[0m \u001b[0;32mfor\u001b[0m \u001b[0mX\u001b[0m \u001b[0;32min\u001b[0m \u001b[0mdoc\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0ments\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+            "\u001b[0;31mTypeError\u001b[0m: 'module' object is not callable"
+          ]
+        }
+      ]
+    }
+  ]
+}
